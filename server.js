@@ -20,7 +20,6 @@ app.use('/user', userRoute) // use the router
 const candidateRoute = require('./routes/candidateRoutes')
 app.use('/candidate', candidateRoute) // use the router
 
-// Comment
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {

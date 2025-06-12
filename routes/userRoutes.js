@@ -12,7 +12,7 @@ userRouter.post('/signup', async (req, res) => {
       //Check if there are already admin user
       const adminUser = await User.findOne({role: 'admin'})
       if (data.role == 'admin') {
-        res.status(404).json({massege: 'admin user already exits'})
+        res.status(404).json({massege: 'admin user already exits'});
       }
 
       // Create a new user document using the mongoose model
@@ -22,6 +22,7 @@ userRouter.post('/signup', async (req, res) => {
       const response = await newUser.save();
       console.log('data saved');
   
+      //generate token
       const payload = {
         id: response.id,
       };
@@ -41,15 +42,15 @@ userRouter.post('/signup', async (req, res) => {
 userRouter.post('/login', async (req, res) => {
   try {
     //Extract username and password from request body
-    const { aadharCardNumber, password } = req.body
+    const { aadhaarCardNumber, password } = req.body
     // const data = req.body
 
-    if (!aadharCardNumber || !password) {
+    if (!aadhaarCardNumber || !password) {
       return res.status(401).json({ error: 'Please Provide All Fields ' })
     }
     
     //find the user by aadharCardNumber
-    const userCard = await User.findOne({ aadharCardNumber: aadharCardNumber })
+    const userCard = await User.findOne({ aadhaarCardNumber: aadhaarCardNumber })
 
     //if user does not exist or passworddoes not match, return error
     if (!userCard) {
@@ -98,12 +99,12 @@ userRouter.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
 
     const responce = await User.findById(userPut)
 
-    if (responce.password !== password) {
+    if (responce.password !== currentPassword) {
       return res.status(401).json({ error: 'Invalid password' })
     }
 
     //update user password
-    responce.password = new password()
+    responce.password = newPassword()
     await responce.save()
 
     console.log('password updated')

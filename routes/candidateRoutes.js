@@ -1,8 +1,8 @@
 const express = require('express')
 const candidateRouter = express.Router()
 const Candidate = require('./../models/candidate')
-const { jwtAuthMiddleware, generateToken } = require('../jwt');
 const User = require("../models/user")
+const { jwtAuthMiddleware, generateToken } = require('../jwt');
 
 const checkAdminRole = async (data)=>{
     try {
@@ -45,10 +45,10 @@ candidateRouter.put('/:candidateID', jwtAuthMiddleware, async (req, res) => {
         return res.status(403).json({message: 'user does have not admin role'})
 
     const candidatePut = req.params.candidateID //extract the id from the URL parameter
-    const updateCandidateData = req.body //update data for the person
+    const updateCandidateData = req.body //update data for the candidate
 
-    const responce = await User.findByIdAndUpadte(candidatePut, updateCandidateData)
-
+    const responce = await Candidate.findByIdAndUpadte(candidatePut, updateCandidateData)
+    
     if (!responce) {
       return res.status(401).json({ error: 'candidate not found' })
     }
@@ -69,7 +69,7 @@ candidateRouter.delete('/:candidateID', jwtAuthMiddleware, async (req, res) => {
 
     const candidateDelete = req.params.candidateID //extract the id from the URL parameter
 
-    const responce = await User.findByIdAndDelete(candidateDelete)
+    const responce = await Candidate.findByIdAndDelete(candidateDelete)
 
 
     if (!responce) {
